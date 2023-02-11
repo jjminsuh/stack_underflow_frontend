@@ -1,4 +1,5 @@
 import 'package:flip_card/flip_card.dart';
+import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:stack_underflow_frontend/constant/constants.dart';
 
@@ -11,12 +12,20 @@ class HomeScreen extends StatelessWidget {
   var lastVisitDate = "2023-02-10";
   var lastUpdateDate = "2023-02-10";
 
+  // late FlipCardController _controller;
+  var controller = FlipCardController();
+
+  void doStuff() {
+    controller.toggleCard();
+  }
+  
+
   @override
   Widget build(BuildContext context) {
     
     double height = MediaQuery.of(context).size.height;
 
-    FlipCardController _controller;
+    
 
     switch (gender) {
       case 0:
@@ -38,9 +47,9 @@ class HomeScreen extends StatelessWidget {
             aspectRatio: 2 / 3,
             child: FlipCard(
               direction: FlipDirection.HORIZONTAL,
-              front: CardFront(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText, lastVisitDate: lastVisitDate, lastUpdateDate: lastUpdateDate),
+              front: CardFront(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText, lastVisitDate: lastVisitDate, lastUpdateDate: lastUpdateDate,),
               back: CardBack(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText,),
-              controller: _controller,
+              controller: controller,
             ),
           ),
         ),
@@ -203,7 +212,7 @@ class CardFront extends StatelessWidget {
   }
 }
 
-class CardBack extends StatelessWidget {
+class CardBack extends StatefulWidget {
   const CardBack({
     Key? key,
     required this.hospitalType,
@@ -218,6 +227,20 @@ class CardBack extends StatelessWidget {
   final String genderText;
 
   @override
+  State<CardBack> createState() => _CardBackState();
+}
+
+class _CardBackState extends State<CardBack> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scrollController = ScrollController();
+
+  }
+  @override
   Widget build(BuildContext context) {
     double heightCard = MediaQuery.of(context).size.height * 0.7;
 
@@ -227,116 +250,127 @@ class CardBack extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30)
       ),
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.blue,
-              Colors.white,
-            ]
-          )
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 24),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
-                    child: Text(
-                      hospitalType,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.blue,
+                Colors.white,
+              ]
+            )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        widget.hospitalType,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: heightCard * 0.05,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24.0),
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                    SizedBox(
+                      height: heightCard * 0.3,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24.0),
+                      child: Text(
+                        widget.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: heightCard * 0.03,
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 24.0),
-                        child: Text(
-                          birthDate,
+                    SizedBox(
+                      height: heightCard * 0.03,
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24.0),
+                          child: Text(
+                            widget.birthDate,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const Padding(
+                          padding:  EdgeInsets.symmetric(horizontal: 2.0),
+                          child: Text(TEXT_SLASH),
+                        ),
+                        Text(
+                          widget.genderText,
                           style: const TextStyle(
                             fontSize: 16,
                           ),
                         ),
-                      ),
-                      const Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Text(TEXT_SLASH),
-                      ),
-                      Text(
-                        genderText,
-                        style: const TextStyle(
+                      ],
+                    ),
+                    SizedBox(
+                      height: heightCard * 0.05,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 24.0),
+                      child: Text(
+                        TEXT_WRITE_YOUR_CONDITION,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: heightCard * 0.05,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 24.0),
-                    child: Text(
-                      TEXT_WRITE_YOUR_CONDITION,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: heightCard * 0.05,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 24.0),
-                    child: SizedBox(
-                      width: 200,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter your ...',
+                    SizedBox(
+                      height: heightCard * 0.05,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24.0),
+                      child: SizedBox(
+                        width: 200,
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter your ...',
+                          ),
+                          onTap: () {
+                            _scrollController.animateTo(
+                              MediaQuery.of(context).viewInsets.bottom + 100, 
+                              duration: const Duration(milliseconds: 100), 
+                              curve: Curves.ease);
+                          },
                         ),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          
-                        },
-                        child: const Text(TEXT_CONFIRM),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                          },
+                          child: const Text(TEXT_CONFIRM),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: heightCard,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       )
