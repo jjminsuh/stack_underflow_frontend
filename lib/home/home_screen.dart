@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stack_underflow_frontend/constant/constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,18 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var lastUpdateDate = "2023-02-10";
 
-  late FlipCardController controller;
+  late FlipCardController _controller;
   late ScrollController _scrollController;
   
   @override
   void initState() {
     super.initState();
-    controller = FlipCardController();
+    _controller = FlipCardController();
     _scrollController = ScrollController();
   }
 
   void doStuff() {
-    controller.toggleCard();
+    _controller.toggleCard();
   }
 
   @override
@@ -183,8 +186,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      controller.toggleCard();
-                                    },
+                                      // Fluttertoast.showToast(
+                                      //   msg: "Updated the QR code",
+                                        
+                                      // );
+                                      _controller.toggleCard();
+                                     },
                                     child: const Text(TEXT_CONFIRM),
                                   ),
                                 ],
@@ -200,12 +207,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
               ),
-              controller: controller,
+              controller: _controller,
             ),
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 }
 
