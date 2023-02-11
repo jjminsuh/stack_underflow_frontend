@@ -26,9 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
   var lastUpdateDate = "2023-02-10";
 
   final _formKey = GlobalKey<FormState>();
-  String? _name = 'Name Test';
-  String? _dob = '2023-02-11';
-  String? _gender = 'Male';
+  String? _name = '';
+  String? _dob = '';
+  String? _gender = '';
   String? _allergies = '';
   String? _bloodtype = '';
   String? _pastrecords = '';
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: heightCard * 0.3,
                             ),
-                            if (_qrData.isNotEmpty)
+                            // if (_qrData.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(left: 24.0),
                                 child: Text(
@@ -178,8 +178,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             else
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                                child: SizedBox(
+                                child: Container(
+                                  color: Colors.white,
                                   height: heightCard * 0.2,
+                                  width: heightCard * 0.2,
                                 ),
                               ),
                             Column(
@@ -232,197 +234,220 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: _scrollController,
                     child: Container(
                       decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
                             Colors.blue,
                             Colors.white,
-                          ])),
+                          ]
+                        )
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
                           children: [
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    hospitalType,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.3,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 24.0),
-                                  child: Text(
-                                    userName,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.03,
-                                ),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 24.0),
+                                      padding: const EdgeInsets.only(left: 16.0),
                                       child: Text(
-                                        birthDate,
+                                        hospitalType,
                                         style: const TextStyle(
-                                          fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.3,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 24.0),
+                                      child: Text(
+                                        userName,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.03,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 24.0),
+                                          child: Text(
+                                            birthDate,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(horizontal: 2.0),
+                                          child: Text(TEXT_SLASH),
+                                        ),
+                                        Text(
+                                          genderText,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.05,
+                                    ),
+                                    Form(
+                                      key: _formKey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 2.0),
+                                        child: Column(
+                                          children: <Widget>[
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Name'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Please enter a name';
+                                                }
+                                                return null;
+                                              },
+                                              onSaved: (value) => _name = value,
+                                            ),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Date of Birth'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Please enter your date of birth';
+                                                }
+                                                return null;
+                                              },
+                                              onSaved: (value) => _dob = value,
+                                            ),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Gender'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Please enter your gender';
+                                                }
+                                                return null;
+                                              },
+                                              onSaved: (value) => _gender = value,
+                                            ),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Allergies'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Please type "None" if no Allergies';
+                                                }
+                                                return null;
+                                              },
+                                              onTap: () {
+                                                _scrollController.animateTo(
+                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                  duration: const Duration(
+                                                    microseconds: 100),
+                                                  curve: Curves.ease);
+                                              },
+                                              onSaved: (value) =>
+                                                  _allergies = value,
+                                            ),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText: 'Blood Type'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Please enter your blood type';
+                                                }
+                                                return null;
+                                              },
+                                              onTap: () {
+                                                _scrollController.animateTo(
+                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                  duration: const Duration(
+                                                    microseconds: 100),
+                                                  curve: Curves.ease);
+                                              },
+                                              onSaved: (value) =>
+                                                  _bloodtype = value,
+                                            ),
+                                            TextFormField(
+                                              decoration: const InputDecoration(
+                                                  labelText:
+                                                      'Past Medical Records'),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.trim().isEmpty) {
+                                                  return 'Enter "None" if no records';
+                                                }
+                                                return null;
+                                              },
+                                              onTap: () {
+                                                _scrollController.animateTo(
+                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                  duration: const Duration(
+                                                    microseconds: 100),
+                                                  curve: Curves.ease);
+                                              },
+                                              onSaved: (value) =>
+                                                  _pastrecords = value,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
                                     const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Text(TEXT_SLASH),
+                                      padding: EdgeInsets.only(left: 24.0),
+                                      child: Text(
+                                        TEXT_WRITE_YOUR_CONDITION,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      genderText,
-                                      style: const TextStyle(
-                                        fontSize: 16,
+                                    SizedBox(
+                                      height: heightCard * 0.05,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 24.0),
+                                      child: SizedBox(
+                                        width: 200,
+                                        child: TextField(
+                                          decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Enter your ...',
+                                          ),
+                                          onTap: () {
+                                            _scrollController.animateTo(
+                                                MediaQuery.of(context).viewInsets.bottom + 100,
+                                                duration: const Duration(
+                                                    milliseconds: 100),
+                                                curve: Curves.ease);
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: heightCard * 0.05,
-                                ),
-                                Form(
-                                  key: _formKey,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 2.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        // TextFormField(
-                                        //   decoration: const InputDecoration(
-                                        //       labelText: 'Name'),
-                                        //   validator: (value) {
-                                        //     if (value == null ||
-                                        //         value.trim().isEmpty) {
-                                        //       return 'Please enter a name';
-                                        //     }
-                                        //     return null;
-                                        //   },
-                                        //   onSaved: (value) => _name = value,
-                                        // ),
-                                        // TextFormField(
-                                        //   decoration: const InputDecoration(
-                                        //       labelText: 'Date of Birth'),
-                                        //   validator: (value) {
-                                        //     if (value == null ||
-                                        //         value.trim().isEmpty) {
-                                        //       return 'Please enter your date of birth';
-                                        //     }
-                                        //     return null;
-                                        //   },
-                                        //   onSaved: (value) => _dob = value,
-                                        // ),
-                                        // TextFormField(
-                                        //   decoration: const InputDecoration(
-                                        //       labelText: 'Gender'),
-                                        //   validator: (value) {
-                                        //     if (value == null ||
-                                        //         value.trim().isEmpty) {
-                                        //       return 'Please enter your gender';
-                                        //     }
-                                        //     return null;
-                                        //   },
-                                        //   onSaved: (value) => _gender = value,
-                                        // ),
-                                        TextFormField(
-                                          decoration: const InputDecoration(
-                                              labelText: 'Allergies'),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.trim().isEmpty) {
-                                              return 'Please type "None" if no Allergies';
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (value) =>
-                                              _allergies = value,
-                                        ),
-                                        TextFormField(
-                                          decoration: const InputDecoration(
-                                              labelText: 'Blood Type'),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.trim().isEmpty) {
-                                              return 'Please enter your blood type';
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (value) =>
-                                              _bloodtype = value,
-                                        ),
-                                        TextFormField(
-                                          decoration: const InputDecoration(
-                                              labelText:
-                                                  'Past Medical Records'),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.trim().isEmpty) {
-                                              return 'Enter "None" if no records';
-                                            }
-                                            return null;
-                                          },
-                                          onSaved: (value) =>
-                                              _pastrecords = value,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 24.0),
-                                  child: Text(
-                                    TEXT_WRITE_YOUR_CONDITION,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.05,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 24.0),
-                                  child: SizedBox(
-                                    width: 200,
-                                    child: TextField(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your ...',
-                                      ),
-                                      onTap: () {
-                                        _scrollController.animateTo(
-                                            MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom +
-                                                100,
-                                            duration: const Duration(
-                                                milliseconds: 100),
-                                            curve: Curves.ease);
-                                      },
-                                    ),
-                                  ),
-                                ),
                                 Row(
-                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
@@ -437,9 +462,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: heightCard,
-                                )
                               ],
                             ),
                           ],
