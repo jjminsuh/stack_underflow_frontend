@@ -13,8 +13,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+
+    FlipCardController _controller;
 
     switch (gender) {
       case 0:
@@ -37,7 +39,8 @@ class HomeScreen extends StatelessWidget {
             child: FlipCard(
               direction: FlipDirection.HORIZONTAL,
               front: CardFront(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText, lastVisitDate: lastVisitDate, lastUpdateDate: lastUpdateDate),
-              back: CardBack(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText,)
+              back: CardBack(hospitalType: hospitalType, name: name, birthDate: birthDate, genderText: genderText,),
+              controller: _controller,
             ),
           ),
         ),
@@ -66,57 +69,134 @@ class CardFront extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double heightCard = MediaQuery.of(context).size.height * 0.7;
+
     return Card(
+      clipBehavior: Clip.antiAlias,
       elevation: 8,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40)
+        borderRadius: BorderRadius.circular(30)
       ),
-      color: Colors.green,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Column(
-          children: [
-            Container(
-              color: Colors.green,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
+      child: Container(
+        decoration:  const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue,
+              Colors.white,
+            ]
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Text(
+                      hospitalType,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: heightCard * 0.3,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height:  heightCard * 0.03,
+                  ),
+                  Row(
                     children: [
-                      Text(hospitalType),
-                      Text(name),
-                      Text(genderText),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 28.0),
+                        child: Text(
+                          birthDate,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 2.0),
+                        child: Text(TEXT_SLASH),
+                      ),
+                      Text(
+                        genderText,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                     ],
                   ),
+                  SizedBox(
+                    height: heightCard * 0.1,
+                  )
                 ],
               ),
-            ),
-            Container(
-              color: Colors.blue,
-              child: Row(
+              Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Image.network(
                       "https://picsum.photos/200",
-                      height: 100,
-                      width: 100,
+                      height: heightCard * 0.25,
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(LAST_VISIT_DATE),
-                      Text(lastVisitDate),
-                      const Text(LAST_UPDATE_DATE),
-                      Text(lastUpdateDate),
+                      const Text(
+                        TEXT_LAST_VISIT_DATE,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        lastVisitDate,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        height: heightCard * 0.03,
+                      ),
+                      const Text(
+                        TEXT_LAST_UPDATE_DATE,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        lastUpdateDate,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       )
     );
@@ -139,27 +219,102 @@ class CardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double heightCard = MediaQuery.of(context).size.height * 0.7;
+
     return Card(
+      clipBehavior: Clip.antiAlias,
       elevation: 8,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40)
+        borderRadius: BorderRadius.circular(30)
       ),
-      color: Colors.green,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Column(
-              children: [
-                Text(hospitalType),
-                Text(name),
-                Text(birthDate),
-                Text(genderText),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: const [
-                    SizedBox(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.blue,
+              Colors.white,
+            ]
+          )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Text(
+                      hospitalType,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: heightCard * 0.05,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24.0),
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: heightCard * 0.03,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: Text(
+                          birthDate,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: 2.0),
+                        child: Text(TEXT_SLASH),
+                      ),
+                      Text(
+                        genderText,
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: heightCard * 0.05,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24.0),
+                    child: Text(
+                      TEXT_WRITE_YOUR_CONDITION,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: heightCard * 0.05,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24.0),
+                    child: SizedBox(
+                      width: 200,
                       child: TextField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
@@ -167,11 +322,22 @@ class CardBack extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
-          ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          
+                        },
+                        child: const Text(TEXT_CONFIRM),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       )
     );
