@@ -28,7 +28,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Google Login'),
+        title: Text('Login'),
         elevation: 0.0,
       ),
       body: Column(
