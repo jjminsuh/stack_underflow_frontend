@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:stack_underflow_frontend/map/map_screen.dart';
+import 'package:stack_underflow_frontend/mypage/mypage_screen.dart';
+import 'package:stack_underflow_frontend/translate/translate_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -9,7 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       home: MyStatefulWidget(),
     );
@@ -27,19 +32,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+
+  static final List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    const TranslateScreen(),
+    const MyPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -55,13 +55,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         title: const Text('App Name'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-            }, 
-            icon: const Icon(Icons.map_outlined)),
+              onPressed: () {
+                print("IconButton map");
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return MapScreen();
+                  }),
+                );
+              },
+              icon: const Icon(Icons.map_outlined)),
           IconButton(
-            onPressed: () {
-            }, 
-            icon: const Icon(Icons.notifications_outlined))
+              onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
         ],
       ),
       body: Center(
@@ -80,6 +84,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: 'My Page',
+
           ),
         ],
         currentIndex: _selectedIndex,
