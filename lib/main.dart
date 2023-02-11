@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_underflow_frontend/home/home_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -27,16 +28,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
+  static final List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    const Text(
       'Index 1: Business',
       style: optionStyle,
     ),
-    Text(
+    const Text(
       'Index 2: School',
       style: optionStyle,
     ),
