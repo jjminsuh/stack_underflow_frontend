@@ -147,44 +147,29 @@ class CardBack extends StatelessWidget {
       color: Colors.green,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40),
-        child: Column(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
-              color: Colors.green,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Column(
-                    children: [
-                      Text(hospitalType),
-                      Text(name),
-                      Text(birthDate),
-                      Text(genderText),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              color: Colors.blue,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Image.network(
-                      "https://picsum.photos/200",
-                      height: 100,
-                      width: 100,
+            Column(
+              children: [
+                Text(hospitalType),
+                Text(name),
+                Text(birthDate),
+                Text(genderText),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: const [
+                    SizedBox(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter your ...',
+                        ),
+                      ),
                     ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    ],
-                  ),
-                ],
-              ),
+                  ],
+                )
+              ],
             ),
           ],
         ),
