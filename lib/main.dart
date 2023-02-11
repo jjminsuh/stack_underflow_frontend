@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stack_underflow_frontend/map/map_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: _title,
       home: MyStatefulWidget(),
     );
@@ -27,6 +29,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
@@ -55,13 +58,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         title: const Text('App Name'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {
-            }, 
-            icon: const Icon(Icons.map_outlined)),
+              onPressed: () {
+                print("IconButton map");
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return MapScreen();
+                  }),
+                );
+              },
+              icon: const Icon(Icons.map_outlined)),
           IconButton(
-            onPressed: () {
-            }, 
-            icon: const Icon(Icons.notifications_outlined))
+              onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
         ],
       ),
       body: Center(
