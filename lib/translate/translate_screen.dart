@@ -1,8 +1,15 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:stack_underflow_frontend/translate/Utils/image_cropper_page.dart';
+import 'Utils/image_picker_class.dart' as transImg;
+import 'package:stack_underflow_frontend/translate/Widgets/modal_dialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'Screen/recognization_page.dart';
 
 class TranslateScreen extends StatefulWidget {
   const TranslateScreen({Key? key}) : super(key: key);
@@ -16,12 +23,12 @@ class _TranslateScreenState extends State<TranslateScreen> {
 
   Future pickImage() async {
     try {
-      final image =  await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
 
       final imageTemporary = File(image.path);
       setState(() => this.image = imageTemporary);
-    } on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print("Failed to pick image : $e");
     }
   }
@@ -40,7 +47,23 @@ class _TranslateScreenState extends State<TranslateScreen> {
               color: Colors.blueAccent[100],
               child: InkWell(
                 onTap: () {
-
+                  log("Camera");
+                  transImg.pickImage(source: ImageSource.camera).then((value) {
+                    if (value != '') {
+                      imageCropperView(value, context).then((value) {
+                        if (value != '') {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (_) => RecognizePage(
+                                path: value,
+                              ),
+                            ),
+                          );
+                        }
+                      });
+                    }
+                  });
                 },
                 child: SizedBox(
                   width: 250,
@@ -64,7 +87,23 @@ class _TranslateScreenState extends State<TranslateScreen> {
               color: Colors.blueAccent[100],
               child: InkWell(
                 onTap: () {
-                  pickImage();
+                  log("Gallery");
+                  transImg.pickImage(source: ImageSource.gallery).then((value) {
+                    if (value != '') {
+                      imageCropperView(value, context).then((value) {
+                        if (value != '') {
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (_) => RecognizePage(
+                                path: value,
+                              ),
+                            ),
+                          );
+                        }
+                      });
+                    }
+                  });
                 },
                 child: SizedBox(
                   width: 250,
