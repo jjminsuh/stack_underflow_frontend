@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stack_underflow_frontend/constant/constants.dart';
 
+import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:convert';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -28,6 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var lastUpdateDate = "2023-02-10";
 
+  final _formKey = GlobalKey<FormState>();
+  String? _name = '';
+  String? _dob = '';
+  String? _gender = '';
+  String? _allergies = '';
+  String? _bloodtype = '';
+  String? _pastrecords = '';
+  Map<String, String> _qrData = {};
+  bool _qrVisible = false;
+
   late FlipCardController _controller;
   late ScrollController _scrollController;
 
@@ -40,6 +53,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void doStuff() {
     _controller.toggleCard();
+  }
+
+  void _convertToQR() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _qrData = {
+          'Name': '$_name',
+          'DOB': '$_dob',
+          'Gender': '$_gender',
+          'Allergies': '$_allergies',
+          'Blood Type': '$_bloodtype',
+        };
+        _qrVisible = true;
+      });
+    }
   }
 
   @override
@@ -152,6 +181,92 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(
                                   height: heightCard * 0.05,
                                 ),
+                                Form(
+                                  key: _formKey,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText: 'Name'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Please enter a name';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) => _name = value,
+                                        ),
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText: 'Date of Birth'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Please enter your date of birth';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) => _dob = value,
+                                        ),
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText: 'Gender'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Please enter your gender';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) => _gender = value,
+                                        ),
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText: 'Allergies'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Please type "None" if no Allergies';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) =>
+                                              _allergies = value,
+                                        ),
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText: 'Blood Type'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Please enter your blood type';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) =>
+                                              _bloodtype = value,
+                                        ),
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                              labelText:
+                                                  'Past Medical Records'),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.trim().isEmpty) {
+                                              return 'Enter "None" if no records';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (value) =>
+                                              _pastrecords = value,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                                 const Padding(
                                   padding: EdgeInsets.only(left: 24.0),
                                   child: Text(
@@ -196,6 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         //   msg: "Updated the QR code",
 
                                         // );
+                                        _convertToQR();
                                         _controller.toggleCard();
                                       },
                                       child: const Text(TEXT_CONFIRM),
@@ -325,13 +441,22 @@ class CardFront extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Image.network(
-                        "https://picsum.photos/200",
-                        height: heightCard * 0.2,
+                    if (_qrVisible)
+                      Container(
+                        margin: const EdgeInsets.only(top: 16.0),
+                        child: QrImage(
+                          data: jsonEncode(_qrData),
+                          size: 0.5 * MediaQuery.of(context).size.width,
+                        ),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Image.network(
+                          "https://picsum.photos/200",
+                          height: heightCard * 0.2,
+                        ),
                       ),
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
