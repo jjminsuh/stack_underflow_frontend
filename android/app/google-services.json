@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "936471068617",
+    "project_id": "stack-underflow-e6e4f",
+    "storage_bucket": "stack-underflow-e6e4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936471068617:android:db775b635b0041caeaf218",
+        "android_client_info": {
+          "package_name": "com.example.stack_underflow_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "936471068617-nldqg77jkm4eh4o8i7sbdc54j0hvdije.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stack_underflow_frontend",
+            "certificate_hash": "e81f91be04aa8258db61205cd456495f6066df29"
+          }
+        },
+        {
+          "client_id": "936471068617-vcohu8nt60u7dmue2qbc5o5k1ietomhc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBuT1m5ZKNFogL4PW0TXlHQX2FGH4rlDg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "936471068617-h127m9gkvmmg3sjq6opd90m941inht56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
