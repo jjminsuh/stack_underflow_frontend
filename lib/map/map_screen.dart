@@ -19,11 +19,25 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GoogleMap(
-          mapType: MapType.normal,
-          // 처음에 어떤 위치에서 바라볼지
-          initialCameraPosition: initialPosition,
-        )
-    );
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              GoogleMap(
+                mapType: MapType.normal,
+                // 처음에 어떤 위치에서 바라볼지
+                initialCameraPosition: initialPosition,
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 24, right: 12),
+                alignment: Alignment.topRight,
+                child: Row(
+                  children: <Widget>[
+
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }

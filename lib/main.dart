@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stack_underflow_frontend/map/map_screen.dart';
+import 'package:stack_underflow_frontend/mypage/mypage_screen.dart';
+import 'package:stack_underflow_frontend/translate/translate_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -33,19 +33,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Home',
       style: optionStyle,
     ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    const TranslateScreen(),
+    const MyPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -90,6 +84,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: 'My Page',
+
           ),
         ],
         currentIndex: _selectedIndex,
