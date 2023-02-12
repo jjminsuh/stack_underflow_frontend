@@ -49,7 +49,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('MedGo'),
+        title: const Text('MedicGo'),
         actions: <Widget>[
           IconButton(
               onPressed: () {
