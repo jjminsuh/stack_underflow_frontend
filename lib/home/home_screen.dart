@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stack_underflow_frontend/constant/constants.dart';
+
+import 'package:qr_flutter/qr_flutter.dart';
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,19 +16,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var hospitalType = "Hospital Type Test";
-
-  var name = "Name Test";
-
-  var birthDate = "2023-02-11";
-
+  var hospitalType = "Pediatric Hospital";
+  var userName = "Name Test";
+  var birthDate = "2000-01-01";
   var gender = 0;
-
   var genderText = "Not selected";
+  var lastVisitDate = "2023-02-12";
+  var lastUpdateDate = "2023-02-12";
 
-  var lastVisitDate = "2023-02-10";
-
-  var lastUpdateDate = "2023-02-10";
+  final _formKey = GlobalKey<FormState>();
+  String _name = 'Name Test';
+  String _dob = '2000-01-01';
+  String _gender = 'Male';
+  String? _allergies = '';
+  String? _bloodtype = '';
+  String? _pastrecords = '';
+  Map<String, String> _qrData = {};
+  bool _qrVisible = false;
 
   late FlipCardController _controller;
   late ScrollController _scrollController;
@@ -40,6 +46,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void doStuff() {
     _controller.toggleCard();
+  }
+
+  void _convertToQR() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      setState(() {
+        _qrData = {
+          'Name': '$_name',
+          'DOB': '$_dob',
+          'Gender': '$_gender',
+          'Allergies': '$_allergies',
+          'Blood Type': '$_bloodtype',
+        };
+        _qrVisible = true;
+      });
+    }
   }
 
   @override
@@ -67,13 +89,140 @@ class _HomeScreenState extends State<HomeScreen> {
             aspectRatio: 2 / 3,
             child: FlipCard(
               direction: FlipDirection.HORIZONTAL,
-              front: CardFront(
-                hospitalType: hospitalType,
-                name: name,
-                birthDate: birthDate,
-                genderText: genderText,
-                lastVisitDate: lastVisitDate,
-                lastUpdateDate: lastUpdateDate,
+              front: Card(
+                clipBehavior: Clip.antiAlias,
+                elevation: 8,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.blue,
+                          Colors.white,
+                        ]),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: Column(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Text(
+                                hospitalType,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                            ),
+                            SizedBox(
+                              height: heightCard * 0.3,
+                            ),
+                            // if (_qrData.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(left: 24.0),
+                                child: Text(
+                                  userName,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: heightCard * 0.03,
+                              ),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 28.0),
+                                    child: Text(
+                                      birthDate,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 2.0),
+                                    child: Text(TEXT_SLASH),
+                                  ),
+                                  Text(
+                                    genderText,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: heightCard * 0.1,
+                            )
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            if (_qrVisible)
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                child: QrImage(
+                                  data: jsonEncode(_qrData),
+                                  size: heightCard * 0.2,
+                                ),
+                              )
+                            else
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                child: Container(
+                                  color: Colors.white,
+                                  height: heightCard * 0.2,
+                                  width: heightCard * 0.2,
+                                ),
+                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  TEXT_LAST_VISIT_DATE,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  lastVisitDate,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: heightCard * 0.03,
+                                ),
+                                const Text(
+                                  TEXT_LAST_UPDATE_DATE,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  lastUpdateDate,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ),
               back: Card(
                   clipBehavior: Clip.antiAlias,
@@ -84,119 +233,212 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: _scrollController,
                     child: Container(
                       decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                            Colors.blue,
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
                             Colors.white,
-                          ])),
+                            Colors.blue,
+                          ]
+                        )
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 24),
                         child: Row(
-                          mainAxisSize: MainAxisSize.max,
                           children: [
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: Text(
-                                    hospitalType,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.3,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 24.0),
-                                  child: Text(
-                                    name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.03,
-                                ),
-                                Row(
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 24.0),
+                                      padding: const EdgeInsets.only(left: 16.0),
                                       child: Text(
-                                        birthDate,
+                                        hospitalType,
                                         style: const TextStyle(
-                                          fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.3,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 24.0),
+                                      child: Text(
+                                        userName,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.03,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 24.0),
+                                          child: Text(
+                                            birthDate,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(horizontal: 2.0),
+                                          child: Text(TEXT_SLASH),
+                                        ),
+                                        Text(
+                                          genderText,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: heightCard * 0.05,
+                                    ),
+                                    Form(
+                                      key: _formKey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 2.0),
+                                        child: Column(
+                                          children: <Widget> [
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Allergies'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please type "None" if no Allergies';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _allergies = value,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Blood Type'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please enter your blood type';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _bloodtype = value,
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText:
+                                                          'Past Medical Records'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Enter "None" if no records';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _pastrecords = value,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
                                     const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 2.0),
-                                      child: Text(TEXT_SLASH),
+                                      padding: EdgeInsets.only(left: 24.0),
+                                      child: Text(
+                                        TEXT_WRITE_YOUR_CONDITION,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
                                     ),
-                                    Text(
-                                      genderText,
-                                      style: const TextStyle(
-                                        fontSize: 16,
+                                    SizedBox(
+                                      height: heightCard * 0.05,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 24.0),
+                                      child: SizedBox(
+                                        width: 200,
+                                        child: TextField(
+                                          decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: 'Enter your ...',
+                                          ),
+                                          onTap: () {
+                                            _scrollController.animateTo(
+                                                MediaQuery.of(context).viewInsets.bottom + 100,
+                                                duration: const Duration(
+                                                    milliseconds: 100),
+                                                curve: Curves.ease);
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: heightCard * 0.05,
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 24.0),
-                                  child: Text(
-                                    TEXT_WRITE_YOUR_CONDITION,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightCard * 0.05,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 24.0),
-                                  child: SizedBox(
-                                    width: 200,
-                                    child: TextField(
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Enter your ...',
-                                      ),
-                                      onTap: () {
-                                        _scrollController.animateTo(
-                                            MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom +
-                                                100,
-                                            duration: const Duration(
-                                                milliseconds: 100),
-                                            curve: Curves.ease);
-                                      },
-                                    ),
-                                  ),
-                                ),
                                 Row(
-                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Fluttertoast.showToast(
-                                        //   msg: "Updated the QR code",
-
-                                        // );
+                                        _convertToQR();
                                         _controller.toggleCard();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Updated the QR Code'),
+                                          ),
+                                        );
                                       },
                                       child: const Text(TEXT_CONFIRM),
                                     ),
@@ -226,318 +468,3 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 }
-
-class CardFront extends StatelessWidget {
-  const CardFront({
-    Key? key,
-    required this.hospitalType,
-    required this.name,
-    required this.birthDate,
-    required this.genderText,
-    required this.lastVisitDate,
-    required this.lastUpdateDate,
-  }) : super(key: key);
-
-  final String hospitalType;
-  final String name;
-  final String birthDate;
-  final String genderText;
-  final String lastVisitDate;
-  final String lastUpdateDate;
-
-  @override
-  Widget build(BuildContext context) {
-    double heightCard = MediaQuery.of(context).size.height * 0.7;
-
-    return Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.blue,
-                  Colors.white,
-                ]),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: Text(
-                        hospitalType,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ),
-                    SizedBox(
-                      height: heightCard * 0.3,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24.0),
-                      child: Text(
-                        name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: heightCard * 0.03,
-                    ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 28.0),
-                          child: Text(
-                            birthDate,
-                            style: const TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 2.0),
-                          child: Text(TEXT_SLASH),
-                        ),
-                        Text(
-                          genderText,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: heightCard * 0.1,
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Image.network(
-                        "https://picsum.photos/200",
-                        height: heightCard * 0.2,
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          TEXT_LAST_VISIT_DATE,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          lastVisitDate,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(
-                          height: heightCard * 0.03,
-                        ),
-                        const Text(
-                          TEXT_LAST_UPDATE_DATE,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          lastUpdateDate,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ));
-  }
-}
-
-// class CardBack extends StatefulWidget {
-//   const CardBack({
-//     Key? key,
-//     required this.hospitalType,
-//     required this.name,
-//     required this.birthDate,
-//     required this.genderText,
-//   }) : super(key: key);
-
-//   final String hospitalType;
-//   final String name;
-//   final String birthDate;
-//   final String genderText;
-
-//   @override
-//   State<CardBack> createState() => _CardBackState();
-// }
-
-// class _CardBackState extends State<CardBack> {
-//   late ScrollController _scrollController;
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-//     _scrollController = ScrollController();
-
-//   }
-//   @override
-//   Widget build(BuildContext context) {
-//     double heightCard = MediaQuery.of(context).size.height * 0.7;
-
-//     return Card(
-//       clipBehavior: Clip.antiAlias,
-//       elevation: 8,
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(30)
-//       ),
-//       child: SingleChildScrollView(
-//         controller: _scrollController,
-//         child: Container(
-//           decoration: const BoxDecoration(
-//             gradient: LinearGradient(
-//               begin: Alignment.topCenter,
-//               end: Alignment.bottomCenter,
-//               colors: [
-//                 Colors.blue,
-//                 Colors.white,
-//               ]
-//             )
-//           ),
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(vertical: 24),
-//             child: Row(
-//               mainAxisSize: MainAxisSize.max,
-//               children: [
-//                 Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Padding(
-//                       padding: const EdgeInsets.only(left: 16.0),
-//                       child: Text(
-//                         widget.hospitalType,
-//                         style: const TextStyle(
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 20
-//                         ),
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: heightCard * 0.3,
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.only(left: 24.0),
-//                       child: Text(
-//                         widget.name,
-//                         style: const TextStyle(
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 18,
-//                         ),
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: heightCard * 0.03,
-//                     ),
-//                     Row(
-//                       children: [
-//                         Padding(
-//                           padding: const EdgeInsets.only(left: 24.0),
-//                           child: Text(
-//                             widget.birthDate,
-//                             style: const TextStyle(
-//                               fontSize: 16,
-//                             ),
-//                           ),
-//                         ),
-//                         const Padding(
-//                           padding:  EdgeInsets.symmetric(horizontal: 2.0),
-//                           child: Text(TEXT_SLASH),
-//                         ),
-//                         Text(
-//                           widget.genderText,
-//                           style: const TextStyle(
-//                             fontSize: 16,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     SizedBox(
-//                       height: heightCard * 0.05,
-//                     ),
-//                     const Padding(
-//                       padding: EdgeInsets.only(left: 24.0),
-//                       child: Text(
-//                         TEXT_WRITE_YOUR_CONDITION,
-//                         style: TextStyle(
-//                           fontWeight: FontWeight.bold,
-//                           fontSize: 16,
-//                         ),
-//                       ),
-//                     ),
-//                     SizedBox(
-//                       height: heightCard * 0.05,
-//                     ),
-//                     Padding(
-//                       padding: const EdgeInsets.only(left: 24.0),
-//                       child: SizedBox(
-//                         width: 200,
-//                         child: TextField(
-//                           decoration: const InputDecoration(
-//                             border: OutlineInputBorder(),
-//                             hintText: 'Enter your ...',
-//                           ),
-//                           onTap: () {
-//                             _scrollController.animateTo(
-//                               MediaQuery.of(context).viewInsets.bottom + 100, 
-//                               duration: const Duration(milliseconds: 100), 
-//                               curve: Curves.ease);
-//                           },
-//                         ),
-//                       ),
-//                     ),
-//                     Row(
-//                       mainAxisSize: MainAxisSize.max,
-//                       children: [
-//                         ElevatedButton(
-//                           onPressed: () {
-                            
-//                           },
-//                           child: const Text(TEXT_CONFIRM),
-//                         ),
-//                       ],
-//                     ),
-//                     SizedBox(
-//                       height: heightCard,
-//                     )
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       )
-//     );
-//   }
-// }
