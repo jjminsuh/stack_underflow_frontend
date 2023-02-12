@@ -45,6 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _scrollController = ScrollController();
   }
 
+  //final _allergies
+
   void doStuff() {
     _controller.toggleCard();
   }
@@ -310,103 +312,139 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 2.0),
                                         child: Column(
-                                          children: <Widget>[
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: 'Name'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Please enter a name';
-                                                }
-                                                return null;
-                                              },
-                                              onSaved: (value) => _name = value,
+                                          children: <Widget> [
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Name'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please enter a name';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onSaved: (value) => _name = value,
+                                                ),
+                                              ),
                                             ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: 'Date of Birth'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Please enter your date of birth';
-                                                }
-                                                return null;
-                                              },
-                                              onSaved: (value) => _dob = value,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Date of Birth'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please enter your date of birth';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onSaved: (value) => _dob = value,
+                                                ),
+                                              ),
                                             ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: 'Gender'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Please enter your gender';
-                                                }
-                                                return null;
-                                              },
-                                              onSaved: (value) => _gender = value,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Gender'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please enter your gender';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onSaved: (value) => _gender = value,
+                                                ),
+                                              ),
                                             ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: 'Allergies'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Please type "None" if no Allergies';
-                                                }
-                                                return null;
-                                              },
-                                              onTap: () {
-                                                _scrollController.animateTo(
-                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
-                                                  duration: const Duration(
-                                                    microseconds: 100),
-                                                  curve: Curves.ease);
-                                              },
-                                              onSaved: (value) =>
-                                                  _allergies = value,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Allergies'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please type "None" if no Allergies';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _allergies = value,
+                                                ),
+                                              ),
                                             ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText: 'Blood Type'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Please enter your blood type';
-                                                }
-                                                return null;
-                                              },
-                                              onTap: () {
-                                                _scrollController.animateTo(
-                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
-                                                  duration: const Duration(
-                                                    microseconds: 100),
-                                                  curve: Curves.ease);
-                                              },
-                                              onSaved: (value) =>
-                                                  _bloodtype = value,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText: 'Blood Type'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Please enter your blood type';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _bloodtype = value,
+                                                ),
+                                              ),
                                             ),
-                                            TextFormField(
-                                              decoration: const InputDecoration(
-                                                  labelText:
-                                                      'Past Medical Records'),
-                                              validator: (value) {
-                                                if (value == null ||
-                                                    value.trim().isEmpty) {
-                                                  return 'Enter "None" if no records';
-                                                }
-                                                return null;
-                                              },
-                                              onTap: () {
-                                                _scrollController.animateTo(
-                                                  MediaQuery.of(context).viewInsets.bottom + 100, 
-                                                  duration: const Duration(
-                                                    microseconds: 100),
-                                                  curve: Curves.ease);
-                                              },
-                                              onSaved: (value) =>
-                                                  _pastrecords = value,
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 24.0),
+                                              child: SizedBox(
+                                                width: 200,
+                                                child: TextFormField(
+                                                  decoration: const InputDecoration(
+                                                      labelText:
+                                                          'Past Medical Records'),
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.trim().isEmpty) {
+                                                      return 'Enter "None" if no records';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onTap: () {
+                                                    _scrollController.animateTo(
+                                                      MediaQuery.of(context).viewInsets.bottom + 100, 
+                                                      duration: const Duration(
+                                                        microseconds: 100),
+                                                      curve: Curves.ease);
+                                                  },
+                                                  onSaved: (value) =>
+                                                      _pastrecords = value,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),
