@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  MapScreen({Key? key}) : super(key: key);
 
-  // latitude - 위도 , longtitude - 경도
+  Completer<GoogleMapController> _controller = Completer();
+
   static final LatLng companyLatLng = LatLng(
       37.5233273,
       126.921252
@@ -16,28 +19,40 @@ class MapScreen extends StatelessWidget {
       zoom : 15
   );
 
+  List<Marker> _marker = [];
+  List<Marker> _list = const [
+    Marker(markerId: MarkerId('1'),
+    position: LatLng(32.42796133588664, -122.085749),
+      infoWindow: InfoWindow(
+        title: "My Position"
+      )
+    ),
+    Marker(markerId: MarkerId('2'),
+        position: LatLng(33.738045, -73.084488),
+        infoWindow: InfoWindow(
+            title: "e-11 sector"
+        )
+    ),
+  ];
+
+  @override
+  void initState() {
+    _marker.addAll(_list);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              GoogleMap(
-                mapType: MapType.normal,
-                // 처음에 어떤 위치에서 바라볼지
-                initialCameraPosition: initialPosition,
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 24, right: 12),
-                alignment: Alignment.topRight,
-                child: Row(
-                  children: <Widget>[
-
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
+      body: Scaffold(
+        body: GoogleMap(
+          mapType: MapType.normal,
+          markers: Set<Marker>.of(_marker),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          initialCameraPosition: initialPosition,
+        ),
+      ),
+    );
   }
 }
