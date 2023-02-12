@@ -413,7 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: TextField(
                                           decoration: const InputDecoration(
                                             border: OutlineInputBorder(),
-                                            hintText: 'Enter your ...',
+                                            hintText: 'Enter your condition',
                                           ),
                                           onTap: () {
                                             _scrollController.animateTo(
