@@ -55,5 +55,9 @@
     <string>Do you want to access camera?</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Do you want to access photos?</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Do you want to access Location?</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Do you want to access Always description?</string>
 </dict>
 </plist>
