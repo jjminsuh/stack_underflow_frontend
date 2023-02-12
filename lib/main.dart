@@ -3,6 +3,7 @@ import 'package:stack_underflow_frontend/home/home_screen.dart';
 import 'package:stack_underflow_frontend/map/map_screen.dart';
 import 'package:stack_underflow_frontend/mypage/mypage_screen.dart';
 import 'package:stack_underflow_frontend/translate/translate_screen.dart';
+import 'package:stack_underflow_frontend/notification/notification_screen.dart';
 
 void main() => runApp(const MyApp());
 
@@ -62,7 +63,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               },
               icon: const Icon(Icons.map_outlined)),
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.notifications_outlined))
+              onPressed: () {
+                print("IconButton notification");
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return NotificationScreen();
+                  }),
+                );
+              }, icon: const Icon(Icons.notifications_outlined))
         ],
       ),
       body: Center(
