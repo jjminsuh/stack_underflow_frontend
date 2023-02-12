@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stack_underflow_frontend/constant/constants.dart';
 
 import 'package:qr_flutter/qr_flutter.dart';
@@ -44,8 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller = FlipCardController();
     _scrollController = ScrollController();
   }
-
-  //final _allergies
 
   void doStuff() {
     _controller.toggleCard();
@@ -489,12 +486,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Fluttertoast.showToast(
-                                        //   msg: "Updated the QR code",
-
-                                        // );
                                         _convertToQR();
                                         _controller.toggleCard();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Updated the QR Code'),
+                                          ),
+                                        );
                                       },
                                       child: const Text(TEXT_CONFIRM),
                                     ),
