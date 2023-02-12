@@ -16,18 +16,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var hospitalType = "Hospital Type Test";
+  var hospitalType = "Pediatric Hospital";
   var userName = "Name Test";
-  var birthDate = "2023-02-11";
+  var birthDate = "2000-01-01";
   var gender = 0;
   var genderText = "Not selected";
-  var lastVisitDate = "2023-02-10";
-  var lastUpdateDate = "2023-02-10";
+  var lastVisitDate = "2023-02-12";
+  var lastUpdateDate = "2023-02-12";
 
   final _formKey = GlobalKey<FormState>();
-  String? _name = '';
-  String? _dob = '';
-  String? _gender = '';
+  String _name = 'Name Test';
+  String _dob = '2000-01-01';
+  String _gender = 'Male';
   String? _allergies = '';
   String? _bloodtype = '';
   String? _pastrecords = '';
@@ -237,8 +237,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                            Colors.blue,
                             Colors.white,
+                            Colors.blue,
                           ]
                         )
                       ),
@@ -310,60 +310,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 2.0),
                                         child: Column(
                                           children: <Widget> [
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 24.0),
-                                              child: SizedBox(
-                                                width: 200,
-                                                child: TextFormField(
-                                                  decoration: const InputDecoration(
-                                                      labelText: 'Name'),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.trim().isEmpty) {
-                                                      return 'Please enter a name';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onSaved: (value) => _name = value,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 24.0),
-                                              child: SizedBox(
-                                                width: 200,
-                                                child: TextFormField(
-                                                  decoration: const InputDecoration(
-                                                      labelText: 'Date of Birth'),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.trim().isEmpty) {
-                                                      return 'Please enter your date of birth';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onSaved: (value) => _dob = value,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left: 24.0),
-                                              child: SizedBox(
-                                                width: 200,
-                                                child: TextFormField(
-                                                  decoration: const InputDecoration(
-                                                      labelText: 'Gender'),
-                                                  validator: (value) {
-                                                    if (value == null ||
-                                                        value.trim().isEmpty) {
-                                                      return 'Please enter your gender';
-                                                    }
-                                                    return null;
-                                                  },
-                                                  onSaved: (value) => _gender = value,
-                                                ),
-                                              ),
-                                            ),
                                             Padding(
                                               padding: const EdgeInsets.only(left: 24.0),
                                               child: SizedBox(
@@ -498,6 +444,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
+                                SizedBox(
+                                  height: heightCard,
+                                )
                               ],
                             ),
                           ],
